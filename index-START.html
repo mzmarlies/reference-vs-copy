@@ -8,31 +8,83 @@
 
   <script>
     // start with strings, numbers and booleans
+    let age = 100;
+    let age2 = age;
+    console.log(age, age2);
+    // will print "100, 100"
+    age = 200;
+    console.log(age, age2);
+     // will print "200, 100" because even though we've reassigned age, age2 still holds the original value 
+    //  if you change the original one (age) it's not going to update the other one (age2)
 
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
 
     // and we want to make a copy of it.
+    const team = players;
+    console.log(team, players)
 
     // You might think we can just do something like this:
+    team[3] = 'Lux';
 
     // however what happens when we update that array?
+    console.log(team)
+    //will print ['Wes', 'Sarah', 'Ryan', 'Lux']
+
+    console.log(players)
+    //will ALSO print ['Wes', 'Sarah', 'Ryan', 'Lux']
+
+    // BECAUSE: 
+    // "team" isn't the array, it's just a reference to the original array of "players"
+    // with *ARRAYS* when you change the original array, it's going to go back to the reference and so will also change everything that then references it, unlike with strings, numbers and booleans, as in the example before
+    // when you update an array, it will always reference back
 
     // now here is the problem!
-
     // oh no - we have edited the original array too!
-
     // Why? It's because that is an array reference, not an array copy. They both point to the same array!
 
+
     // So, how do we fix this? We take a copy instead!
+
+    // when you use slice with no arguments, it will make a copy of the array
+    const team2 = players.slice();
+
+    // and then if you changed something in the array:
+    team2[3] = "Beth";
+    // NOW:
+    console.log(team2)
+    //will print ['Wes', 'Sarah', 'Ryan', 'Beth']
+
+    // now when we update it, the original one isn't changed
+    console.log(players)
+    //will still have the original values ['Wes', 'Sarah', 'Ryan', 'Sarah']
+    // this is because we made a copy of the array, so the original remains untouched
 
     // one way
 
     // or create a new array and concat the old one in
+    const team3 = [].concat(players)
+    team3[3] = "Ash"
+    console.log(team3)
+    // now when we update it, the original one isn't changed
+    console.log(players)
 
     // or use the new ES6 Spread
+    const team4 = [...players];
+    team4[3] = "Ollie"
+    console.log(team4);
+    // now when we update it, the original one isn't changed
+    console.log(players);
+
+    const team5 = Array.from(players);
+    team5[3] = "Sal";
+    console.log(team5);
 
     // now when we update it, the original one isn't changed
+    console.log(players);
+
+
+
 
     // The same thing goes for objects, let's say we have a person object
 
@@ -43,12 +95,40 @@
     };
 
     // and think we make a copy:
+    // const captain = person;
+    // captain.number = 99;
+    //this will be a refernce to the original one, not a copy
 
     // how do we take a copy instead?
+    // use Object.assign
+    // start with a blank object
+    // pass it the object you wish to copy all the properties from
+    // then fold in the properties you wish to overwrite
+    // then that goes into the new variable you want
+    // Object.assign({}, person, { number: 99 });
+    const captain2 = Object.assign({}, person, { number: 99, age: 12 });
+    // now captain2 will show the new values, but the original will remain untouched:
+    console.log(captain2);
+    console.log(person);
 
     // We will hopefully soon see the object ...spread
+    // const captain3 = { ...person }
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    const wes = {
+      name: 'Wes',
+      age: 100,
+      social: {
+        twitter: '@wesbos',
+        facebook: 'wesbos.developer'
+      }
+    };
+
+    console.log(wes)
+
+    const dev = Object.assign({}, wes);
+    dev.name = 'Wesley';
+    console.log(dev)
 
   </script>
 
